@@ -272,6 +272,18 @@ func yamlConfigPath(projectPath string) (string, bool) {
 		}
 	}
 
+	xdgEnvar := os.Getenv("HOME")
+
+	pathToConfig := path.Join(xdgEnvar, ".config/snitch/snitch.yaml")
+	if stat, err := os.Stat(pathToConfig); !os.IsNotExist(err) && !stat.IsDir() {
+		return pathToConfig, true
+	}
+
+	pathToConfig = path.Join(xdgEnvar, ".config/snitch/snitch.yml")
+	if stat, err := os.Stat(pathToConfig); !os.IsNotExist(err) && !stat.IsDir() {
+		return pathToConfig, true
+	}
+
 	return "", false
 }
 
